@@ -1,0 +1,44 @@
+.Alert_box{
+    display: flex;
+    height: 80px;
+    width: 20vw;
+    align-items: center;
+    position: fixed;
+    background-color: #e2edfb;
+    padding: 1rem;
+    right: 2rem;
+    border-radius: 8px;
+    z-index: 999;
+    top: 1rem;
+    justify-content: space-around;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    transition: 3s ease-in-out;
+}
+.message_box p{
+    opacity: 80%;
+    font-size: 0.9rem;
+    padding: 0.4rem 0rem;
+}
+.button_box{
+    display: flex;
+}
+.button_box button{
+    color: white;
+    background-color: cornflowerblue;
+    border: 0;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+.icon_Box{
+    background-color: cornflowerblue;
+    color: white;
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+     
+}

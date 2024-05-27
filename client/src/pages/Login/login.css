@@ -1,0 +1,14 @@
+.login{
+    height:100vh;
+    display: flex;
+}
+.left_section{
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+.form_section{
+    width: 40%;
+    height: 100%;
+    margin: 0 5rem;
+}

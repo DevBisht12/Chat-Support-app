@@ -1,0 +1,46 @@
+.updateUser_form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.UpdateForm{
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 25vw;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.UpdateForm h1 {
+    padding: 1rem 0rem;
+}
+.UpdateForm label {
+    font-size: 1rem;
+    padding: 0.5rem 0;
+}
+.UpdateForm input{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #9e9e9e30;
+    outline: none;
+    margin-bottom: 10px;
+}
+.UpdateForm select{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #9e9e9e30;
+    outline: none;
+    margin-bottom: 10px;
+}
+.UpdateForm button{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #3556C4;
+    color:white;
+}

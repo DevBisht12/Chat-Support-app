@@ -1,0 +1,52 @@
+.support_container{
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    /* border: 2px solid ; */
+    background-color: gainsboro;
+}
+.side_menu{
+    width: 30%;
+    height: 100%;
+    background-color: #f6f9f8;
+}
+.chatBox {
+    width: 100%;
+}
+.chatBox_header{
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background-color: #3556C4;
+}
+.chatBox_header h1{
+    color: white;
+}
+.chatBox_header img{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+.chatBox_Main{
+    overflow-y: scroll;
+    height: 81.6vh
+}
+.chat_form{
+    /* border: 2px solid royalblue; */
+    display: flex;
+}
+.chat_form input{
+    width: 68vw;
+    padding: 1rem;
+    border: none;
+    background-color: #e8f0fe;
+    outline: none;
+}
+.chat_form  button{
+    width: 20%;
+    padding: 1rem;
+    border: none;
+    background-color: #f6f9f8;
+    outline: none;
+    cursor: pointer;
+}

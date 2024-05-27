@@ -1,0 +1,12 @@
+*{
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  
+}
+a{
+  text-decoration: none;
+  /* color: #244ca1; */
+  color: #244c80;
+}
