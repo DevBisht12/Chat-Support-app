@@ -16,8 +16,53 @@
 .chatBox_header{
     display: flex;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    padding: 0.3rem 2rem;
+    align-items: center;
     background-color: #3556C4;
+}
+.chatBox_header button {
+    width: 55px;
+    height: 55px;
+    padding: 1rem;
+    border: none;
+    background-color: #3556c4;
+    outline: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.8rem;
+    border-radius: 50px;
+    transition: background-color 0.5s ease-out;
+    text-align: center;
+}
+
+
+.chatBox_header button:hover {
+    background-color: #eff3f81a;
+}
+
+.chatBox_header button{
+    width: 10%;
+    padding: 1rem;
+    border: none;
+    background-color: #3556c4;
+    outline: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.8rem;
+    width: 55px;
+    height: 55px;
+    border-radius: 50px;
+    transition: 0.5s ease-out;
+    text-align: center;
+}
+
+.chatBox_header button:hover{
+    background-color: #eff3f81a ;
+    color: white;
+    width: 55px;
+    height: 55px;
+    border-radius: 50px;
+    transition: 0.5s ease-out;
 }
 .chatBox_header h1{
     color: white;

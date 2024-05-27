@@ -35,13 +35,16 @@ const Home = () => {
         console.log(message, sender, roomId);
         setRoomId(roomId);
 
-        const receivedMessage = {
-          message,
-          user: sender,
-          time: new Date().toLocaleString(),
-        };
-
-        setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+        if(sender==='support'){
+          const receivedMessage = {
+            message,
+            user: sender,
+            time: new Date().toLocaleString(),
+          };
+  
+          setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+        }
+       
       });
     }
 
@@ -64,8 +67,8 @@ const Home = () => {
       user: user?.role,
       time: new Date().toLocaleString(),
     };
-
-    // setMessages((prevMessages) => [...prevMessages, newMessage]);
+    // setMessage()
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage("");
 
     if (socket) {
@@ -74,7 +77,10 @@ const Home = () => {
           socket.emit("messageToSupport", {
             userId: user.id,
             message: newMessage.message,
+            // message: message,
+            sender:user.role
           });
+          
         } else {
           socket.emit("sendMessage", {
             roomId,

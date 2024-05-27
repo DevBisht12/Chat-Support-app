@@ -4,35 +4,28 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
+import { IoExitOutline } from "react-icons/io5";
 import SupportMessage from "../../components/SupportMessage/SupportMessage";
 
-
 const TestSupport = ({ msg }) => {
-  
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const { user } = useSelector((state) => state.user);
   const { roomId } = useSelector((state) => state.roomId);
   const [socket, setSocket] = useState(null);
   const { socketIO } = useSelector((state) => state.socketIO);
-  // console.log(user);
-  // console.log(socketIO);
 
   useEffect(() => {
     const newSocket = io("http://localhost:5000");
     setSocket(newSocket);
-    // console.log(socket)
-    if (newSocket) {
-      newSocket.emit("joinRoom", { name: user.name, role: user.role });
-    }
 
     if (newSocket) {
+      newSocket.emit("joinRoom", { name: user.name, role: user.role });
+
       newSocket.on("chatStarted", (data) => {
         console.log(data.userId);
       });
-    }
 
-    if (newSocket) {
       newSocket.on("receiveMessage", (message, sender, roomId) => {
         console.log(message, sender, roomId);
 
@@ -41,7 +34,6 @@ const TestSupport = ({ msg }) => {
           user: sender,
           time: new Date().toLocaleString(),
         };
-        setMessages((prevMessages)=>[...prevMessages,msg])
 
         setMessages((prevMessages) => [...prevMessages, receivedMessage]);
       });
@@ -52,11 +44,10 @@ const TestSupport = ({ msg }) => {
         newSocket.disconnect();
       }
     };
-  }, []);
-
+  }, [user.name, user.role]);
 
   useEffect(() => {
-    if (msg?.user === 'user') {
+    if (msg?.user === "user") {
       setMessages((prevMessages) => [...prevMessages, msg]);
     }
   }, [msg]);
@@ -69,30 +60,29 @@ const TestSupport = ({ msg }) => {
       time: new Date().toLocaleString(),
     };
 
-    const updatedMessages = [...messages, newMessage];
-
-    updatedMessages.sort((a, b) => new Date(b.time) - new Date(a.time));
-    setMessages(updatedMessages.reverse());
-    
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
     setMessage("");
 
     if (socket) {
       socket.emit("sendMessage", {
-        roomId:roomId,
+        roomId: roomId,
         message: newMessage.message,
         sender: user.role,
       });
-      // if (socket) {
-      //   socket.on("receiveMessage", (message, sender, roomId) => {
-      //     console.log(message, sender, roomId);
-      //   });
-      // }
-
-      // console.log(roomId);
     }
   };
 
-  console.log(messages)
+  const handleLeaveRoom=()=>{
+    console.log('leave btn clicked')
+    if (socket) {
+      socket.emit("leaveRoom", {
+        roomId: roomId,
+        supportId: user.id,
+      });
+    }
+  }
+
+  console.log(messages);
   return (
     <div className="support">
       <div className="support_container">
@@ -102,10 +92,9 @@ const TestSupport = ({ msg }) => {
             <Link to="/">
               <h1>LoGo</h1>
             </Link>
-            <img
-              src="https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg"
-              alt=""
-            />
+            <button class="leave-btn" onClick={handleLeaveRoom}>
+              <IoExitOutline />
+            </button>
           </div>
           <div className="chatBox_Main">
             {messages.map((msg, i) => (
@@ -138,4 +127,3 @@ const TestSupport = ({ msg }) => {
 };
 
 export default TestSupport;
-
