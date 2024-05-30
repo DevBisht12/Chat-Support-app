@@ -51,44 +51,56 @@ io.on("connection", (socket) => {
   });
 
   socket.on("messageToSupport", ({ userId, message, sender }) => {
-    console.log('First message:', message);
     socket.join(userId);
+    console.log(userId,'userid from or roomid form message to support')
     if (!userAndSupportChat[userId]) {
-      userAndSupportChat[userId] = null; 
+      userAndSupportChat[userId] = null;
       io.to("supportRoom").emit("requestFromUser", userId);
     }
     io.to(userId).emit("receiveMessage", message, sender, userId);
   });
 
   socket.on("acceptUserJoinRequest", ({ supportId, name, roomId }) => {
-    console.log("Support accepted request:", supportId, name, roomId);
     socket.join(roomId);
-    userAndSupportChat[roomId] = supportId; 
-    console.log(userAndSupportChat);
+    console.log(roomId,'acceptUser join request')
+    userAndSupportChat[roomId] = supportId;
     io.to(roomId).emit("chatStarted", { userId: roomId });
     socket.emit("sendSupportId", supportId);
     socket.leave("supportRoom");
-    console.log('Number of people joined the room:', io.sockets.adapter.rooms.get(roomId).size);
+    // console.log('userAndSupportChat',userAndSupportChat)
+    // console.log(`${supportId} accepted the user request ${name} in room ${roomId}`);
   });
 
-  socket.on("leaveRoom", ({ roomId, supportId }) => {
-    console.log(roomId,supportId)
-    socket.leave(roomId);
-    console.log(`${supportId} left the user room ${roomId}`);
-    delete userAndSupportChat[roomId];  // Clean up the chat mapping
-    console.log('Number of people joined the room:', io.sockets.adapter.rooms.get(roomId).size||0);
-    socket.join("supportRoom");
-   
-  });
+
 
   socket.on("sendMessage", ({ roomId, message, sender }) => {
-    console.log('Sending message to room:', roomId, 'Message:', message, 'Sender:', sender);
+    console.log(roomId)
+    console.log(roomId,'send Message')
+    console.log('from line no 76',userAndSupportChat)
     if (userAndSupportChat[roomId]) {
       io.to(roomId).emit("receiveMessage", message, sender, roomId);
     } else {
       io.to("supportRoom").emit("requestFromUser", roomId);
-      io.to(roomId).emit("receiveMessage", message, sender, roomId);
     }
+  });
+
+  socket.on("leaveRoom", ({ roomId, supportId }) => {
+    const RoomId= roomId
+    socket.leave(RoomId);
+    console.log('from leave room id ',roomId)
+    console.log('from line no 87', io.sockets.adapter.rooms.get(roomId).size);
+    const room = io.sockets.adapter.rooms.get(roomId);
+    console.log('Room:',room)
+    // console.log('userAndSupportChat room from leave room',userAndSupportChat)
+    // delete userAndSupportChat[roomId];
+    // console.log(`${supportId} left the user room ${roomId}`);
+    // if (io.sockets.adapter.rooms.get(roomId)) {
+    //   console.log('Number of people left in the room:', io.sockets.adapter.rooms.get(roomId).size);
+    // } else {
+    //   console.log('Room is now empty');
+    // }
+    // socket.join("supportRoom");
+    // console.log(`${supportId} rejoined the support room`);
   });
 });
 

@@ -283,6 +283,22 @@
   flex-direction: column;
   overflow-y: scroll;
 }
+.start_chat button{
+  width: 90%;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  border: none;
+  background-color: #3556c4;
+  color: white;
+  margin: 1rem;
+  cursor: pointer;
+  transition: 0.5s ease-in;
+}
+
+.start_chat button:hover{
+  transition: 0.5s ease-out;
+  background-color: #00000026;
+}
 .sender {
   display: flex;
   padding: 1rem;

@@ -10,6 +10,7 @@ import ChatSupport from "../../components/chat support/chatSupport";
 import "./Home.css";
 import Message from "../../components/Message/Message";
 import { useSelector } from "react-redux";
+import { Button } from "@mui/material";
 
 const Home = () => {
   const [toggleChatBox, setToggleChatBox] = useState(false);
@@ -59,6 +60,19 @@ const Home = () => {
     setToggleChatBox(true);
   };
 
+  const handleStartChat=()=>{
+    if (socket) {
+      if (user?.role === "user") {
+        if (!roomId) {
+          socket.emit("messageToSupport", { 
+            userId: user.id,
+            message: message,
+            sender:user.role
+          }); 
+        }
+      }
+    }
+  }
   const handleChatMessage = (e) => {
     e.preventDefault();
 
@@ -74,7 +88,7 @@ const Home = () => {
     if (socket) {
       if (user?.role === "user") {
         if (!roomId) {
-          socket.emit("messageToSupport", {
+          socket.emit("messageToSupport", { 
             userId: user.id,
             message: newMessage.message,
             // message: message,
@@ -106,15 +120,18 @@ const Home = () => {
             <IoIosArrowDown onClick={() => setToggleChatBox(false)} />
           </div>
           <div className="main_chat">
-            {messages.map((msg, i) => (
+            {messages.length>0?messages.map((msg, i) => (
               <div key={i} style={{ width: "100%", border: "2px" }}>
                 <Message
                   message={msg.message}
                   user={msg.user}
                   time={msg.time}
                 />
-              </div>
-            ))}
+              </div >
+            )):<div className="start_chat">
+              <button onClick={handleStartChat} >Start Chat</button>
+              </div>}
+            {}
           </div>
           <div className="Chat_box_footer">
             <form action="" onSubmit={handleChatMessage}>

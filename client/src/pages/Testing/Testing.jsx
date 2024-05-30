@@ -3,8 +3,9 @@ import { IoSend } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { IoExitOutline } from "react-icons/io5";
+import { getRoomId } from "../../Redux/features/supportSlice";
 import SupportMessage from "../../components/SupportMessage/SupportMessage";
 
 const TestSupport = ({ msg }) => {
@@ -14,6 +15,8 @@ const TestSupport = ({ msg }) => {
   const { roomId } = useSelector((state) => state.roomId);
   const [socket, setSocket] = useState(null);
   const { socketIO } = useSelector((state) => state.socketIO);
+
+  const dispatch=useDispatch()
 
   useEffect(() => {
     const newSocket = io("http://localhost:5000");
@@ -74,15 +77,15 @@ const TestSupport = ({ msg }) => {
 
   const handleLeaveRoom=()=>{
     console.log('leave btn clicked')
-    if (socket) {
+    // window.alert(`roomId: ${roomId}, userId: ${user.id}`);
+
       socket.emit("leaveRoom", {
         roomId: roomId,
         supportId: user.id,
       });
-    }
   }
 
-  console.log(messages);
+  // console.log(messages);
   return (
     <div className="support">
       <div className="support_container">
