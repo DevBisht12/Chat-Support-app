@@ -25,7 +25,7 @@ const connectDB = async (DATABASE_URL) => {
             useUnifiedTopology: true,
             tls: true,
             tlsAllowInvalidCertificates: true, // Use only for testing, not recommended for production
-            tlsInsecure: true // Use only for testing, not recommended for production
+            // tlsInsecure: true // Use only for testing, not recommended for production
         };
 
         await mongoose.connect(DATABASE_URL, DB_OPTIONS);
