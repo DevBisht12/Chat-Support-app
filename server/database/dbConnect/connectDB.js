@@ -4,11 +4,10 @@ const connectDB = async (DATABASE_URL) => {
     try {
         const DB_OPTIONS = {
             dbName: "supportCartApp",
-            // useNewUrlParser: true,
-            // useUnifiedTopology: true,
-            tls: true,
-            tlsAllowInvalidCertificates: true, // Use only for testing, not recommended for production
-            // tlsInsecure: true // Use only for testing, not recommended for production
+
+            // tls: true,
+            // tlsAllowInvalidCertificates: true, 
+
         };
 
         await mongoose.connect(DATABASE_URL, DB_OPTIONS);
