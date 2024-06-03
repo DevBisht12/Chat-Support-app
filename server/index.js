@@ -9,6 +9,7 @@ const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmd
 const app = express();
 const PORT = 5000;
 
+
 app.use(cors());
 app.use(express.json());
 
