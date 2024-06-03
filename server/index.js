@@ -4,24 +4,34 @@ import connectDB from "./database/dbConnect/connectDB.js";
 import userRoutes from "./routes/userRoutes.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&appName=ChatApp" || "mongodb://127.0.0.1:27017";
+const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&appName=ChatApp";
 const app = express();
 const PORT = 5000;
-
 
 app.use(cors());
 app.use(express.json());
 
 const server = createServer(app);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 connectDB(db_URL);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
   },
+});
+
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 app.get("/", (req, res) => {
@@ -53,7 +63,7 @@ io.on("connection", (socket) => {
 
   socket.on("messageToSupport", ({ userId, message, sender }) => {
     socket.join(userId);
-    console.log(userId,'userid from or roomid form message to support')
+    console.log(userId, 'userid from or roomid form message to support');
     if (!userAndSupportChat[userId]) {
       userAndSupportChat[userId] = null;
       io.to("supportRoom").emit("requestFromUser", userId);
@@ -63,21 +73,17 @@ io.on("connection", (socket) => {
 
   socket.on("acceptUserJoinRequest", ({ supportId, name, roomId }) => {
     socket.join(roomId);
-    console.log(roomId,'acceptUser join request')
+    console.log(roomId, 'acceptUser join request');
     userAndSupportChat[roomId] = supportId;
     io.to(roomId).emit("chatStarted", { userId: roomId });
     socket.emit("sendSupportId", supportId);
     socket.leave("supportRoom");
-    // console.log('userAndSupportChat',userAndSupportChat)
-    // console.log(`${supportId} accepted the user request ${name} in room ${roomId}`);
   });
 
-
-
   socket.on("sendMessage", ({ roomId, message, sender }) => {
-    console.log(roomId)
-    console.log(roomId,'send Message')
-    console.log('from line no 76',userAndSupportChat)
+    console.log(roomId);
+    console.log(roomId, 'send Message');
+    console.log('from line no 76', userAndSupportChat);
     if (userAndSupportChat[roomId]) {
       io.to(roomId).emit("receiveMessage", message, sender, roomId);
     } else {
@@ -86,22 +92,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("leaveRoom", ({ roomId, supportId }) => {
-    const RoomId= roomId
-    // console.log(RoomId)
+    const RoomId = roomId;
     socket.leave(RoomId);
-    console.log('from leave room id ',roomId)
+    console.log('from leave room id ', roomId);
     console.log('from line no 87', io.sockets.adapter.rooms.get(roomId).size);
-
-    // console.log('userAndSupportChat room from leave room',userAndSupportChat)
-    // delete userAndSupportChat[roomId];
-    // console.log(`${supportId} left the user room ${roomId}`);
-    // if (io.sockets.adapter.rooms.get(roomId)) {
-    //   console.log('Number of people left in the room:', io.sockets.adapter.rooms.get(roomId).size);
-    // } else {
-    //   console.log('Room is now empty');
-    // }
-    // socket.join("supportRoom");
-    // console.log(`${supportId} rejoined the support room`);
   });
 });
 
