@@ -7,7 +7,8 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&appName=ChatApp";
+const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true";
+
 const app = express();
 const PORT = 5000;
 
