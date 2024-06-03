@@ -3,14 +3,18 @@ import cors from "cors";
 import connectDB from "./database/dbConnect/connectDB.js";
 import userRoutes from "./routes/userRoutes.js";
 import { Server } from "socket.io";
+import dotenv from 'dotenv';
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true";
+// const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true";
 
 const app = express();
-const PORT = 5000;
+
+
+dotenv.config();
+const PORT = process.env.PORT||8000;
 
 app.use(cors());
 app.use(express.json());
@@ -20,7 +24,7 @@ const server = createServer(app);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-connectDB(db_URL);
+connectDB(process.env.DB_URL);
 
 const io = new Server(server, {
   cors: {
