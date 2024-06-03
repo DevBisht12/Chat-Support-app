@@ -5,7 +5,7 @@ import userRoutes from "./routes/userRoutes.js";
 import { Server } from "socket.io";
 import { createServer } from "http";
 
-const db_URL = "mongodb://127.0.0.1:27017";
+const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&appName=ChatApp" || "mongodb://127.0.0.1:27017";
 const app = express();
 const PORT = 5000;
 
@@ -86,11 +86,11 @@ io.on("connection", (socket) => {
 
   socket.on("leaveRoom", ({ roomId, supportId }) => {
     const RoomId= roomId
+    // console.log(RoomId)
     socket.leave(RoomId);
     console.log('from leave room id ',roomId)
     console.log('from line no 87', io.sockets.adapter.rooms.get(roomId).size);
-    const room = io.sockets.adapter.rooms.get(roomId);
-    console.log('Room:',room)
+
     // console.log('userAndSupportChat room from leave room',userAndSupportChat)
     // delete userAndSupportChat[roomId];
     // console.log(`${supportId} left the user room ${roomId}`);
