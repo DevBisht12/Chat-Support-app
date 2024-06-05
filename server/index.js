@@ -8,13 +8,10 @@ import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// const db_URL = "mongodb+srv://rahulsinghbisht125:0tmagssqTgajvwIY@chatapp.8twhmdf.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true";
-
 const app = express();
 
-
 dotenv.config();
-const PORT = process.env.PORT||8000;
+const PORT = process.env.PORT || 8000;
 
 app.use(cors());
 app.use(express.json());
@@ -97,10 +94,19 @@ io.on("connection", (socket) => {
   });
 
   socket.on("leaveRoom", ({ roomId, supportId }) => {
-    const RoomId = roomId;
-    socket.leave(RoomId);
-    console.log('from leave room id ', roomId);
-    console.log('from line no 87', io.sockets.adapter.rooms.get(roomId).size);
+    socket.leave(roomId);
+    console.log('Room id:', roomId, 'supportId:', supportId);
+    socket.join('supportRoom')
+    console.log('number of people in the support room ',io.sockets.adapter.rooms.get('supportRoom').size)
+    console.log('number of people in the support room ',io.sockets.adapter.rooms.get('userRoom').size)
+    // Clean up room state
+    if (userAndSupportChat[roomId] === supportId) {
+      delete userAndSupportChat[roomId];
+    }
+  });
+
+  socket.on("disconnect", () => {
+    // console.log('Socket disconnected:', socket.id);
   });
 });
 
