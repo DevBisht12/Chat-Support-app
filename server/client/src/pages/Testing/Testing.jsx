@@ -1,9 +1,9 @@
 import "./support.css";
 import { IoSend } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { IoExitOutline } from "react-icons/io5";
 import { getRoomId } from "../../Redux/features/supportSlice";
 import SupportMessage from "../../components/SupportMessage/SupportMessage";
@@ -16,7 +16,8 @@ const TestSupport = ({ msg }) => {
   const [socket, setSocket] = useState(null);
   const { socketIO } = useSelector((state) => state.socketIO);
 
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); // Use useNavigate
 
   useEffect(() => {
     const newSocket = io("http://localhost:5000");
@@ -75,15 +76,17 @@ const TestSupport = ({ msg }) => {
     }
   };
 
-  const handleLeaveRoom=()=>{
-    console.log('leave btn clicked')
-    // window.alert(`roomId: ${roomId}, userId: ${user.id}`);
+  const handleLeaveRoom = () => {
+    console.log('leave btn clicked');
 
-      socket.emit("leaveRoom", {
-        roomId: roomId,
-        supportId: user.id,
-      });
-  }
+    socket.emit("leaveRoom", {
+      roomId: roomId,
+      supportId: user.id,
+    });
+    dispatch(getRoomId(""))
+    // Redirect to home
+    navigate('/');
+  };
 
   // console.log(messages);
   return (
@@ -95,7 +98,7 @@ const TestSupport = ({ msg }) => {
             <Link to="/">
               <h1>LoGo</h1>
             </Link>
-            <button class="leave-btn" onClick={handleLeaveRoom}>
+            <button className="leave-btn" onClick={handleLeaveRoom}>
               <IoExitOutline />
             </button>
           </div>

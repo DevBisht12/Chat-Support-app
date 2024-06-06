@@ -61,16 +61,20 @@ io.on("connection", (socket) => {
         console.log(`User ${userData.name} joined user room`);
       }
     }
+   
   });
 
-  socket.on("messageToSupport", ({ userId, message, sender }) => {
+
+  socket.on("messageToSupport", ({ userId, sender }) => {
     socket.join(userId);
+    
     console.log(userId, 'userid from or roomid form message to support');
     if (!userAndSupportChat[userId]) {
       userAndSupportChat[userId] = null;
       io.to("supportRoom").emit("requestFromUser", userId);
     }
-    io.to(userId).emit("receiveMessage", message, sender, userId);
+    // console.log('number of people in the support room ',io.sockets.adapter.rooms.get('supportRoom').size)
+    // io.to(userId).emit("receiveMessage", message, sender, userId);
   });
 
   socket.on("acceptUserJoinRequest", ({ supportId, name, roomId }) => {
@@ -99,10 +103,10 @@ io.on("connection", (socket) => {
     socket.join('supportRoom')
     console.log('number of people in the support room ',io.sockets.adapter.rooms.get('supportRoom').size)
     console.log('number of people in the support room ',io.sockets.adapter.rooms.get('userRoom').size)
-    // Clean up room state
     if (userAndSupportChat[roomId] === supportId) {
       delete userAndSupportChat[roomId];
     }
+    console.log(userAndSupportChat)
   });
 
   socket.on("disconnect", () => {
@@ -113,3 +117,4 @@ io.on("connection", (socket) => {
 server.listen(PORT, () => {
   console.log(`Server started at PORT ${PORT}`);
 });
+

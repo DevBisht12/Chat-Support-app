@@ -10,7 +10,7 @@ import ChatSupport from "../../components/chat support/chatSupport";
 import "./Home.css";
 import Message from "../../components/Message/Message";
 import { useSelector } from "react-redux";
-import { Button } from "@mui/material";
+
 
 const Home = () => {
   const [toggleChatBox, setToggleChatBox] = useState(false);
@@ -61,12 +61,12 @@ const Home = () => {
   };
 
   const handleStartChat=()=>{
+    console.log('handle start chat')
     if (socket) {
       if (user?.role === "user") {
         if (!roomId) {
           socket.emit("messageToSupport", { 
             userId: user.id,
-            message: message,
             sender:user.role
           }); 
         }
@@ -91,7 +91,7 @@ const Home = () => {
           socket.emit("messageToSupport", { 
             userId: user.id,
             message: newMessage.message,
-            // message: message,
+
             sender:user.role
           });
           
